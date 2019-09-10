@@ -5,6 +5,16 @@
 import os
 import sys
 import sqlite3
+import datetime
+
+def log_function(log_entry):
+    '''Loggin Function that accepts string, and
+    logs to a file and prints'''
+    log_file = open('log.txt', 'a')
+    date_time = datetime.datetime.now()
+    log_file.write(date_time.strftime("%Y-%m-%d %H:%M:%S") + ' ' + log_entry + '\n')
+    log_file.close()
+    print(log_entry)
 
 def radarr_database_insert(d):
     '''Radarr Post Processing. Accepts dictionary, and 
@@ -112,7 +122,7 @@ def sonarr_database_insert(d):
 def sonarr_input_from_environment():
     '''Run as Post Processing script from Sonarr, pulls the environmental
     into dictionary, and inserts them into the database'''
-    print('Sonarr - Reading From Environment Variables')
+    log_function('Sonarr - Reading From Environment Variables')
     d = {'sonarr_series_type' : (os.environ['sonarr_series_type']),
         'OS_NAME': (os.environ['OS_NAME']),
         'sonarr_episodefile_episodeairdates': (os.environ['sonarr_episodefile_episodeairdates']),
@@ -154,7 +164,7 @@ def sonarr_input_from_environment():
         'sonarr_series_imdbid': (os.environ['sonarr_series_imdbid']),
         'sonarr_episodefile_episodeairdatesutc': (os.environ['sonarr_episodefile_episodeairdatesutc']),
         '_' : (os.environ['_'])}
-    print('Imported Environment Variables for ' + d['sonarr_series_title'])
+    log_function('Imported Environment Variables for ' + d['sonarr_series_title'])
     sonarr_database_insert(d)
 
 
@@ -164,7 +174,7 @@ def sonarr_input_from_file(f):
     Key and the right to Value, then inserts it into the dictionary.
     Returns the TV name as a string'''
     file = open(f, 'r')
-    print('Opening File - ' + f)
+    log_function('Opening File - ' + f)
     d = dict.fromkeys(['sonarr_series_type',
                        'OS_NAME',
                        'sonarr_episodefile_episodeairdates',
@@ -216,17 +226,17 @@ def sonarr_input_from_file(f):
     return('Sonarr grabbed ' + str(d['sonarr_series_title']))
 
 if __name__ == "__main__":
-    print('Executing NZBDB Post Processing Script')
+    log_function('Executing NZBDB Post Processing Script')
     triggers_dir = os.path.join(os.getcwd(), 'triggers')
     for file_name in os.listdir(triggers_dir):
         if file_name.startswith('sonarr'):
-            print('Sonarr - Importing Data From Trigger Files')
+            log_function('Sonarr - Importing Data From Trigger Files')
             sonarr_input_from_file(os.path.join(triggers_dir, file_name))
     if "sonarr_eventtype" in os.environ:
-        print('Sonarr - Extracting Data From Environment Variables')
+        log_function('Sonarr - Extracting Data From Environment Variables')
         sonarr_input_from_environment()
     elif "radarr_eventtype" is os.environ:
-        print('Radarr - Extracting Data From Environment Variables')
+        log_function('Radarr - Extracting Data From Environment Variables')
         radarr_input_from_environment()
     else:
-        print('No Files or Event Variables Found')
+        log_function('No Files or Event Variables Found')
