@@ -10,7 +10,8 @@ import datetime
 def log_function(log_entry):
     '''Loggin Function that accepts string, and
     logs to a file and prints'''
-    log_file = open('log.txt', 'a')
+    log_location = '/home/usenet/NZBDB/log.txt'
+    log_file = open(log_location, 'a')
     date_time = datetime.datetime.now()
     log_file.write(date_time.strftime("%Y-%m-%d %H:%M:%S") + ' ' + log_entry + '\n')
     log_file.close()
