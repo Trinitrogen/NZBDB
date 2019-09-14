@@ -11,7 +11,8 @@ def log_function(log_entry):
     '''Loggin Function that accepts string, and
     logs to a file and prints'''
     abspath = os.path.abspath(__file__)
-    log_location = os.path.join(abspath, 'log.txt')
+    dname = os.path.dirname(abspath)
+    log_location = os.path.join(dname, 'log.txt')
     log_file = open(log_location, 'a')
     date_time = datetime.datetime.now()
     log_file.write(date_time.strftime("%Y-%m-%d %H:%M:%S") + ' ' + log_entry + '\n')
@@ -230,8 +231,9 @@ def sonarr_input_from_file(f):
 if __name__ == "__main__":
     log_function('Pyton: Executing NZBDB Post Processing Script')
     abspath = os.path.abspath(__file__)
-    log_function('Absolute Path Is ' + abspath)
-    triggers_dir = os.path.join(abspath, 'triggers')
+    dname = os.path.dirname(abspath)
+    log_function('Absolute Path Is ' + dname)
+    triggers_dir = os.path.join(dname, 'triggers')
     log_function('Trigger Directory is ' + triggers_dir)
     for file_name in os.listdir(triggers_dir):
         if file_name.startswith('sonarr'):
