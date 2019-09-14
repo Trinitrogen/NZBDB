@@ -228,9 +228,11 @@ def sonarr_input_from_file(f):
     return('Sonarr grabbed ' + str(d['sonarr_series_title']))
 
 if __name__ == "__main__":
-    log_function('Executing NZBDB Post Processing Script')
+    log_function('Pyton: Executing NZBDB Post Processing Script')
     abspath = os.path.abspath(__file__)
+    log_function('Absolute Path Is ' + abspath)
     triggers_dir = os.path.join(abspath, 'triggers')
+    log_function('Trigger Directory is ' + triggers_dir)
     for file_name in os.listdir(triggers_dir):
         if file_name.startswith('sonarr'):
             log_function('Sonarr - Importing Data From Trigger Files')
