@@ -7,6 +7,14 @@ import sys
 import sqlite3
 import datetime
 
+def open_database():
+    '''Opens database.db and returns the object'''
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    db_location = os.path.join(dname, 'database.db')
+    log_function('Opening Database ' + db_location)
+    return(sqlite3.connect(db_location))
+
 def log_function(log_entry):
     '''Loggin Function that accepts string, and
     logs to a file and prints'''
@@ -42,7 +50,8 @@ def radarr_database_insert(d):
         radarr_download_id)
     VALUES () """
 
-    db = sqlite3.connect('database.db')
+    #db = sqlite3.connect('database.db')
+    db = open_database()
     cursor = db.cursor()
     cursor.execute(insert_sql, ())
     db.commit()
@@ -75,7 +84,8 @@ def sonarr_database_insert(d):
     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
     ?) """
     
-    db = sqlite3.connect('database.db')
+    #db = sqlite3.connect('database.db')
+    db = open_database()
     cursor = db.cursor()
     cursor.execute(insert_sql, (
             d['sonarr_series_type'],
