@@ -10,7 +10,8 @@ import datetime
 def log_function(log_entry):
     '''Loggin Function that accepts string, and
     logs to a file and prints'''
-    log_location = '/home/usenet/NZBDB/log.txt'
+    abspath = os.path.abspath(__file__)
+    log_location = os.path.join(abspath, 'log.txt')
     log_file = open(log_location, 'a')
     date_time = datetime.datetime.now()
     log_file.write(date_time.strftime("%Y-%m-%d %H:%M:%S") + ' ' + log_entry + '\n')
@@ -228,7 +229,8 @@ def sonarr_input_from_file(f):
 
 if __name__ == "__main__":
     log_function('Executing NZBDB Post Processing Script')
-    triggers_dir = os.path.join(os.getcwd(), 'triggers')
+    abspath = os.path.abspath(__file__)
+    triggers_dir = os.path.join(abspath, 'triggers')
     for file_name in os.listdir(triggers_dir):
         if file_name.startswith('sonarr'):
             log_function('Sonarr - Importing Data From Trigger Files')
